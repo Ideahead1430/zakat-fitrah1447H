@@ -3,591 +3,1089 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Komisyen Amil + Google Sheet</title>
+    <title>Zakat Fitrah 2026 - INSTAQLIM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Digital Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #047857; /* Emerald Green */
-            --secondary-color: #065f46;
-            --accent-color: #d1fae5;
-            --portal-color: #4f46e5; /* Indigo Blue for Portal Button */
-            --text-color: #1f2937;
-            --border-color: #e5e7eb;
-            --bg-color: #f3f4f6;
+            --primary: #fbbf24;
+            --primary-dark: #f59e0b;
+            --secondary: #047857;
+            --accent: #dc2626;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #fef3c7;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
-
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: white;
-            padding: 30px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border-bottom: 4px solid var(--primary-color);
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: var(--transition);
         }
 
-        header h1 { margin: 0 0 10px 0; color: var(--primary-color); font-size: 1.8rem; }
-        header p { margin: 0 0 20px 0; color: #6b7280; font-size: 0.9rem; }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        /* Portal Button Style */
-        .btn-portal {
-            display: inline-flex;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(224, 242, 254, 0.9) 100%),
+                        url('https://arleta.site/interactivelink/2950/Mustadahfin-2024.jpg') center/cover;
+            display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--portal-color);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-        }
-        
-        .btn-portal:hover {
-            background-color: #4338ca;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(79, 70, 229, 0.3);
+            position: relative;
+            overflow: hidden;
+            padding: 100px 2rem 2rem;
         }
 
-        .btn-portal svg {
-            margin-left: 8px;
-            width: 20px;
-            height: 20px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://arleta.site/interactivelink/2950/Mustadahfin-2024.jpg') center/cover;
+            opacity: 0.15;
+            z-index: 1;
         }
 
-        /* Layout */
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
-
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
         }
 
-        .card h2 {
-            margin-top: 0;
-            font-size: 1.25rem;
-            color: var(--secondary-color);
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        .hero-text {
+            animation: slideInLeft 1s ease-out;
         }
 
-        /* Form */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-        
-        input[type="text"], input[type="number"], select {
-            width: 100%; padding: 10px; border: 1px solid var(--border-color);
-            border-radius: 6px; font-size: 1rem; transition: border-color 0.2s;
+        /* --- UPDATED FONT STYLE --- */
+        .hero-text h1 {
+            font-family: 'Orbitron', sans-serif; /* Digital Font */
+            font-size: 4rem; /* Slightly larger */
+            font-weight: 900; /* Bolder */
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            /* Glow and Shadow Effect */
+            text-shadow: 
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px var(--primary),
+                0 0 40px var(--primary-dark),
+                2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        input:focus, select:focus {
-            outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--accent-color);
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 2rem;
         }
 
-        .helper-text { font-size: 0.8rem; color: #6b7280; margin-top: 4px; font-style: italic; }
-
-        /* Checkbox Group */
-        .checkbox-group {
-            background-color: #f0fdf4; padding: 10px; border-radius: 6px;
-            border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 10px;
-        }
-        /* Warna berbeza untuk Data Tambahan agar nampak hierarki */
-        .checkbox-group.sub-option {
-            background-color: #eff6ff; 
-            border-color: #bfdbfe;
-        }
-        
-        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; margin: 0; }
-
-        #receipt-section { display: none; margin-top: 10px; }
-        
-        #custom-percent-group {
-            display: none; background-color: #f0fdf4; padding: 10px;
-            border-radius: 6px; border: 1px solid #bbf7d0;
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
         }
 
-        /* Buttons */
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
         .btn {
-            display: inline-block; background-color: var(--primary-color); color: white;
-            padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;
-            font-size: 1rem; font-weight: 600; width: 100%;
-            transition: background-color 0.2s;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .btn:hover { background-color: var(--secondary-color); }
-        .btn:disabled { background-color: #9ca3af; cursor: not-allowed; }
-        
-        .btn-delete { background-color: #ef4444; width: auto; padding: 5px 10px; font-size: 0.8rem; }
 
-        /* Summary */
-        .summary-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .summary-card {
-            background: var(--primary-color); color: white; padding: 15px;
-            border-radius: 10px; text-align: center;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
         }
-        .summary-card.secondary { background: var(--secondary-color); }
-        .summary-card h3 { margin: 0; font-size: 0.9rem; opacity: 0.9; }
-        .summary-card .value { font-size: 1.5rem; font-weight: bold; margin-top: 5px; }
 
-        /* Table */
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        th { background-color: #f9fafb; color: var(--secondary-color); font-weight: 600; white-space: nowrap; }
-        tr:hover { background-color: #f9fafb; }
-        .amount-col { text-align: right; font-family: 'Courier New', Courier, monospace; font-weight: 600; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
 
-        .empty-state { text-align: center; padding: 40px; color: #9ca3af; }
-        .notification { padding: 10px; margin-bottom: 15px; border-radius: 6px; background-color: #fee2e2; color: #991b1b; display: none; border: 1px solid #fca5a5; }
-        .success-msg { padding: 10px; margin-bottom: 15px; border-radius: 6px; background-color: #dcfce7; color: #166534; display: none; border: 1px solid #86efac; }
-        
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
+        .btn-secondary {
+            background: white;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .hero-calc {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            animation: slideInRight 1s ease-out;
+        }
+
+        .hero-calc h2 {
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+        }
+
+        .calc-result {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .calc-result.show {
+            display: block;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        /* --- INFO CARDS --- */
+        .info-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+
+        .info-card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-light);
             border-radius: 50%;
-            border-top: 4px solid #fff;
-            width: 16px;
-            height: 16px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .info-card-icon i {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .info-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-card .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card .rice-type {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* --- NISAB INFO --- */
+        .nisab-info {
+            background: linear-gradient(135deg, var(--secondary) 0%, #065f46 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .nisab-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .nisab-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* --- STEPS --- */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-light);
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+
+        .step-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .step-icon i {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .step-item h3 {
+            color: var(--text);
+            font-size: 1.2rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col p,
+        .footer-col a {
+            color: #d1d5db;
+            text-decoration: none;
+            line-height: 1.8;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #9ca3af;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            /* Adjust font size for mobile */
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-calc {
+                padding: 2rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- FLOATING BUTTON --- */
+        .floating-pay {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            animation: pulse 2s infinite;
+        }
+
+        .floating-pay .btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #b91c1c 100%);
+            color: white;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- TOAST NOTIFICATION --- */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1001;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* --- MODAL FOR LAFAZ AKAD --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .lafaz-container {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .lafaz-arab {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: right;
+            color: var(--text);
+            line-height: 2.2;
+            margin-bottom: 1.5rem;
+            font-family: 'Segoe UI', sans-serif; /* A font that renders Arabic well */
+        }
+
+        .lafaz-rumi {
+            font-style: italic;
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .lafaz-terjemahan {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 1rem;
+        }
 
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <header>
-            <h1>Sistem Kalkulator Komisyen Amil</h1>
-            <p>Yayasan Pembangunan Jentera Negara (YPJN) - INSTAQLIM</p>
-            
-            <!-- Butang Redirect ke Portal -->
-            <a href="https://stiqdat.interactivelink.site/zakat" target="_blank" rel="noopener noreferrer" class="btn-portal">
-                PORTAL ZAKAT INSTAQLIM 
-                <!-- Ikon anak panah luar -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="https://arleta.site/interactivelink/2950/instaqlim-zakat.html" class="logo">
+                <img src="https://arleta.site/interactivelink/2950/logo-header.jpg" alt="INSTAQLIM Logo">
+                INSTAQLIM
             </a>
-        </header>
+            <div class="nav-links" id="navLinks">
+                <a href="https://stiqdat.interactivelink.site/zakat">Zakat Utama</a>
+                <a href="#kadar">Kadar Zakat</a>
+                <a href="#kalkulator">Kalkulator</a>
+                <a href="#panduan">Panduan</a>
+                <!-- NEW MENU ITEM -->
+                <a href="#" onclick="openModal(); return false;">Lafaz Akad</a>
+                <a href="#" onclick="proceedToPayment(); return false;" class="btn btn-primary">
+    <i class="fas fa-credit-card"></i> Bayar Zakat Fitrah
+</a> 
+                    <!-- Butang di menu navigasi -->
+<a href="#" onclick="proceedToPayment(); return false;" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">
+    <i class="fas fa-hand-holding-usd"></i> Bayar Sekarang
+</a>
+            </div>
+            <div class="mobile-menu" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
 
-        <div class="notification" id="error-msg">Sila isi semua maklumat yang diperlukan.</div>
-        <div class="success-msg" id="success-msg">Data berjaya disimpan ke Google Sheet.</div>
-
-        <div class="dashboard-grid">
-            <!-- Borang Input -->
-            <div class="left-panel">
-                <div class="card">
-                    <h2>Tambah Rekod Komisyen</h2>
-                    <form id="calculator-form">
-                        <!-- Dropdown Nama Pegawai -->
-                        <div class="form-group">
-                            <label for="pic-name">Nama Pegawai / Amil (PIC)</label>
-                            <select id="pic-name" required>
-                                <option value="" disabled selected>-- Pilih Pegawai Berdaftar --</option>
-                                <option value="1 - Shahril">1 - Shahril</option>
-                                <option value="2 - Hafiz">2 - Hafiz</option>
-                                <option value="3 - Ati">3 - Ati</option>
-                                <option value="4 - Syakirul">4 - Syakirul</option>
-                                <option value="5 - Aisyah">5 - Aisyah</option>
-                                <option value="6 - Nora">6 - Nora</option>
-                                <option value="7 - Ayu">7 - Ayu</option>
-                                <option value="8 - Aliff">8 - Aliff</option>
-                                <option value="9 - Idwan">9 - Idwan</option>
-                                <option value="10 - Ustazah Syikin">10 - Ustazah Syikin</option>
-                                <option value="11 - Dr Ruhul">11 - Dr Ruhul</option>
-                                <option value="12 - Muhaimin">12 - Muhaimin</option>
-                                <option value="13 - Sufian">13 - Sufian</option>
-                                <option value="14 - Shahmi">14 - Shahmi</option>
-                                <option value="15 - Pn Ros">15 - Pn Ros</option>
-                            </select>
-                            <div class="helper-text">Kod Amil automatik dipilih.</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="collection-type">Kategori Sumbangan / Zakat</label>
-                            <select id="collection-type" required onchange="handleCategoryChange()">
-                                <option value="" disabled selected>-- Pilih Kategori --</option>
-                                <optgroup label="Kadar Piawai / Instaqlim">
- <option value="0">Pemproses Sahaja</option>
-  <option value="standard_1_8">Standard (1/8 - 12.5%)</option>
-                                    <option value="standard_1_24">Rakan Kerjasama / NGO (1/24 - ~4.17%)</option>
-                                    <option value="custom_range">Fleksibel Ahli Jemaah (Min 10% - Max 25%)</option>
-                                </optgroup>
-                                <optgroup label="Situasi Khas (Piawai / Reruai)">
-                                    <option value="lzsl_rep_resit">Resit LZS / Wakil Reruai - 1/8 drp 43.75%</option>
-                                    <option value="direct_maahad">Terus ke Akaun Maahad (1/8)</option>
-                                    <option value="tax_exempt">Resit Pengecualian Cukai (Standard 12.5%)</option>
-                                </optgroup>
-                            </select>
-                            <div class="helper-text" id="rate-desc">Pilih kategori untuk lihat kadar.</div>
-                        </div>
-
-                        <!-- TAMBAHAN BARU: Lokasi Pembayaran -->
-                        <div class="form-group">
-                            <label for="payment-location">Lokasi Pembayaran</label>
-                            <select id="payment-location" required>
-                                <option value="" disabled selected>-- Pilih Lokasi --</option>
-                                <option value="Dalam Talian">Dalam Talian</option>
-                                <option value="Kaunter A">Kaunter A</option>
-                                <option value="Kaunter B">Kaunter B</option>
-                                <option value="Kaunter C">Kaunter C</option>
-                                <option value="Kaunter D">Kaunter D</option>
-                            </select>
-                        </div>
-
-                        <!-- Custom Percent Input -->
-                        <div class="form-group" id="custom-percent-group">
-                            <label for="custom-percent">Masukkan Peratusan (%)</label>
-                            <input type="number" id="custom-percent" min="10" max="25" step="0.5" value="12.5" oninput="validatePercent(this)">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="amount">Jumlah Kutipan (RM)</label>
-                            <input type="number" id="amount" placeholder="0.00" min="0" step="0.01" required>
-                        </div>
-
-                        <!-- Pemproses Resit Logic -->
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="is-receipt-processor" onchange="toggleReceiptField()">
-                                <label for="is-receipt-processor" style="margin:0; cursor:pointer;">Adakah ini Pemproses Resit?</label>
-                            </div>
-                            
-                            <div id="receipt-section">
-                                <label for="receipt-count" style="margin-top:10px;">Jumlah Resit Diproses</label>
-                                <input type="number" id="receipt-count" placeholder="0" min="0" value="0" oninput="calculatePreview()">
-                                <div class="helper-text">Upah Asas: RM 0.50 / resit</div>
-
-                                <!-- TAMBAHAN: Data Tambahan -->
-                                <div class="checkbox-group sub-option" style="margin-top: 10px;">
-                                    <input type="checkbox" id="is-additional-data">
-                                    <label for="is-additional-data" style="margin:0; cursor:pointer;">Data Tambahan (+RM 1.00 / resit)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="notes">Catatan (Opsional)</label>
-                            <input type="text" id="notes" placeholder="Cth: Kutipan Kaunter Jotform">
-                        </div>
-
-                        <button type="submit" class="btn" id="submit-btn">
-                            <span id="btn-text">Kira & Simpan Rekod</span>
-                        </button>
-                    </form>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>ZAKAT FITRAH 2026</h1>
+                <div class="subtitle">Tunaikan Kewajipan Anda</div>
+                <p>Zakat Fitrah adalah kewajipan bagi setiap Muslim yang mampu pada bulan Ramadhan. Sempurnakan ibadah puasa anda dengan menunaikan zakat fitrah.</p>
+                <div class="hero-buttons">
+                   <a href="#" onclick="proceedToPayment(); return false;" class="btn btn-primary">
+    <i class="fas fa-credit-card"></i> Bayar Zakat Fitrah
+</a>
+                    <a href="#kalkulator" class="btn btn-secondary">
+                        <i class="fas fa-calculator"></i> Kira Jumlah
+                    </a>
                 </div>
             </div>
-
-            <!-- Paparan Jadual -->
-            <div class="right-panel">
-                <div class="summary-container">
-                    <div class="summary-card">
-                        <h3>Jumlah Kutipan (RM)</h3>
-                        <div class="value" id="total-collection">0.00</div>
-                    </div>
-                    <div class="summary-card secondary">
-                        <h3>Jumlah Komisyen (RM)</h3>
-                        <div class="value" id="total-commission">0.00</div>
-                    </div>
+            <div class="hero-calc" id="kalkulator">
+                <h2><i class="fas fa-calculator"></i> Kalkulator Zakat Fitrah</h2>
+                <div class="form-group">
+                    <label for="bilangan">Bilangan Orang</label>
+                    <input type="number" id="bilangan" placeholder="Masukkan bilangan orang" value="1" min="1">
                 </div>
-
-                <div class="card">
-                    <h2>Senarai Pengiraan</h2>
-                    <div class="table-responsive">
-                        <table id="calculation-table">
-                            <thead>
-                                <tr>
-                                    <th>Nama PIC</th>
-                                    <th>Kategori</th>
-                                    <th>Lokasi</th> <!-- Lajur Baru -->
-                                    <th class="amount-col">Kutipan</th>
-                                    <th class="amount-col">Resit</th>
-                                    <th class="amount-col">Komisyen</th>
-                                    <th style="text-align: center;">Tindakan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body">
-                                <!-- Data -->
-                            </tbody>
-                        </table>
-                        <div id="empty-state" class="empty-state">
-                            Tiada data rekod.
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="jenisBeras">Jenis Beras</label>
+                    <select id="jenisBeras" onchange="updateKadar()">
+                        <option value="8">Beras Super Spesial Tempatan / Putih Import (RM 8.00)</option>
+                        <option value="16">Beras Wangi / Pulut / Rebus / Perang (RM 16.00)</option>
+                        <option value="25">Beras Basmathi / Herba Ponni / Jepun / Merah / Hitam (RM 25.00)</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="kiraZakatFitrah()">
+                    <i class="fas fa-calculator"></i> Kira Jumlah
+                </button>
+                <div class="calc-result" id="calcResult">
+                    <div class="result-label">Jumlah Zakat Fitrah</div>
+                    <div class="result-value" id="resultValue">RM 0.00</div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Info Section -->
+    <section id="kadar" class="info-section reveal">
+        <div class="info-container">
+            <div class="section-title">
+                <h2>Kadar Zakat Fitrah 2026</h2>
+                <p>Pilih kadar mengikut jenis beras yang anda gunakan</p>
+            </div>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Kadar 1</h3>
+                    <div class="price">RM 8.00</div>
+                    <div class="rice-type">Beras Super Spesial Tempatan / Putih Import</div>
+                    <p style="margin-top: 1rem; color: var(--text-light);">Kadar untuk individu yang memakan beras super spesial tempatan atau beras putih import.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h3>Kadar 2</h3>
+                    <div class="price">RM 16.00</div>
+                    <div class="rice-type">Beras Wangi / Pulut / Rebus / Perang</div>
+                    <p style="margin-top: 1rem; color: var(--text-light);">Kadar untuk mereka yang memakan beras wangi, pulut, rebus atau perang.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Kadar 3</h3>
+                    <div class="price">RM 25.00</div>
+                    <div class="rice-type">Beras Basmathi / Herba Ponni / Jepun / Merah / Hitam</div>
+                    <p style="margin-top: 1rem; color: var(--text-light);">Kadar untuk individu yang memakan beras basmathi, herba ponni, jepun/calrose, merah atau hitam.</p>
+                </div>
+            </div>
+
+            <!-- Nisab Info -->
+            <div class="nisab-info reveal">
+                <h3><i class="fas fa-info-circle"></i> Nisab Zakat Harta 2026</h3>
+                <p>Kadar nisab zakat harta bagi Januari-Jun 2026 di Selangor</p>
+                <div class="nisab-amount">RM 42,047</div>
+                <p style="margin-top: 1rem; opacity: 0.9;">Nisab adalah nilai minimum harta yang mewajibkan zakat.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Steps Section -->
+    <section id="panduan" class="info-section reveal" style="background: var(--bg-light);">
+        <div class="info-container">
+            <div class="section-title">
+                <h2>Cara Bayar Zakat Fitrah</h2>
+                <p>Ikuti langkah mudah untuk menunaikan zakat fitrah</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>1. Kira Bilangan</h3>
+                    <p>Kira jumlah tanggungan keluarga</p>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <h3>2. Pilih Kadar</h3>
+                    <p>Pilih kadar mengikut jenis beras</p>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>3. Kira Jumlah</h3>
+                    <p>Gunakan kalkulator untuk jumlah tepat</p>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>4. Bayar Online</h3>
+                    <p>Bayar melalui portal pembayaran</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>INSTAQLIM</h3>
+                <p>Institut Tahfiz Al-Quran lil Muttaqin</p>
+                <p style="margin-top: 10px;">Kompleks Sumur Bakti, Jalan Sg. Lalang, Sg. Tekala, 43500 Semenyih</p>
+            </div>
+            <div class="footer-col">
+                <h3>Pautan Pantas</h3>
+                <p><a href="https://stiqdat.interactivelink.site/zakat">Zakat Utama</a></p>
+                <p><a href="https://toyyibpay.com/KOMPLEKS-SURAU-INSTAQLIM" target="_blank" rel="noopener noreferrer">Bayar Zakat Fitrah</a></p>
+                <p><a href="#panduan">Panduan Zakat</a></p>
+                <p><a href="https://stiqdat.interactivelink.site/ihya_ramadan_INSTAQLIM">Infaq Ifthar</a></p>
+            </div>
+            <div class="footer-col">
+                <h3>Hubungi Kami</h3>
+                <p><i class="fas fa-phone"></i> +60 13-207 90409</p>
+                <p><i class="fas fa-envelope"></i> amil.instaqlim@gmail.com</p>
+                <div class="social-links">
+                    <a href="https://web.facebook.com/instaqlim"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/instaqlim.official/#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://MUDIRinstaqlim.wasap.my"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 INSTAQLIM. Hak Cipta Terpelihara.
+        </div>
+    </footer>
+
+    <!-- Floating Pay Button -->
+    <div class="floating-pay">
+    <a href="#" onclick="proceedToPayment(); return false;" class="btn">
+        <i class="fas fa-hand-holding-usd"></i> Bayar Zakat Fitrah
+    </a>
+</div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Modal for Lafaz Akad -->
+    <div id="lafazModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2><i class="fas fa-file-contract"></i> Lafaz Akad Zakat Fitrah</h2>
+            <div class="lafaz-container">
+                <p class="lafaz-arab">
+                    نَوَيْتُ أَنْ أُخْرِجَ زَكَاةَ الْفِطْرَةِ عَنِّي وَعَنْ جَمِيْعِ مَا يَلْزَمُنِي نَفَقَاتُهُمْ شَرْعًا فَرْضًا لِلّٰهِ تَعَالَىٰ
+                </p>
+                <p class="lafaz-rumi">
+                    "Nawaitu an ukhrija zakata al-fitri 'anni wa 'an jami'i ma yalzamuni nafaqatuhum syar'an fardhan lillahi ta'ala."
+                </p>
+                <p class="lafaz-terjemahan">
+                    "Sahaja aku mengeluarkan zakat fitrah yang difardhukan atas diriku dan juga ke atas semua orang yang diwajibkan ke atasku menanggung nafkah mereka menurut syarak, kerana Allah Ta'ala."
+                </p>
+            </div>
+            <p style="text-align: center; color: var(--text-light); font-size: 0.9rem;">
+                Lafaz ini dibaca oleh pembayar atau amil semasa menyerahkan zakat fitrah.
+            </p>
+        </div>
     </div>
 
-    <script>
-        // ==========================================
-        // KONFIGURASI GOOGLE SHEET
-        // ==========================================
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyo2_r5RJDE4RjuloAFKBl3q619Vqx4PuCqVsp2VW_KuwoGyCKTOBG8zNXKYnFaeOxw/exec";
-        // ==========================================
+   <script>
+    // --- VARIABEL GLOBAL ---
+    // Untuk menyimpan jumlah zakat yang telah dikira
+    let calculatedAmount = 0;
 
-        // State & DOM
-        let entries = [];
-        const form = document.getElementById('calculator-form');
-        const collectionTypeSelect = document.getElementById('collection-type');
-        const customPercentGroup = document.getElementById('custom-percent-group');
-        const rateDesc = document.getElementById('rate-desc');
-        const tableBody = document.getElementById('table-body');
-        const emptyState = document.getElementById('empty-state');
-        const errorMsg = document.getElementById('error-msg');
-        const successMsg = document.getElementById('success-msg');
-        const receiptCheckbox = document.getElementById('is-receipt-processor');
-        const receiptSection = document.getElementById('receipt-section');
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = document.getElementById('btn-text');
+    // --- FUNGSI MENU MOBIL ---
+    function toggleMenu() {
+        document.getElementById('navLinks').classList.toggle('active');
+    }
 
-        // Rates Logic
-        const RATES = {
-            'standard_1_8': { desc: '12.5% (1/8)', calc: (amt) => amt * 0.125 },
-            'standard_1_16': { desc: '6.25% (1/16)', calc: (amt) => amt * 0.0625 },
-            'standard_1_24': { desc: '~4.17% (1/24)', calc: (amt) => amt * (1/24) },
-            'lzsl_rep_resit': { desc: '1/8 drp 43.75%', calc: (amt) => amt * 0.4375 * 0.125 },
-            'direct_maahad': { desc: '12.5% (1/8)', calc: (amt) => amt * 0.125 },
-            'tax_exempt': { desc: '12.5% (1/8)', calc: (amt) => amt * 0.125 }
-        };
+    // --- FUNGSI NOTIFIKASI TOAST ---
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
 
-        function formatRM(amount) {
-            return 'RM ' + parseFloat(amount).toFixed(2);
+    // --- FUNGSI UNTUK MENGIRA DAN MENYIMPAN JUMLAH ---
+    function updateCalculation() {
+        const bilangan = parseInt(document.getElementById('bilangan').value) || 0;
+        const kadar = parseFloat(document.getElementById('jenisBeras').value) || 0;
+        
+        // Simpan jumlah ke dalam variabel global
+        calculatedAmount = bilangan * kadar;
+
+        const resultDiv = document.getElementById('calcResult');
+        const resultValue = document.getElementById('resultValue');
+        
+        if (calculatedAmount > 0) {
+            resultValue.textContent = 'RM ' + calculatedAmount.toFixed(2);
+            resultDiv.classList.add('show');
+        } else {
+            resultDiv.classList.remove('show');
+        }
+    }
+
+    // --- FUNGSI UTAMA UNTUK PEMBAYARAN ---
+    function proceedToPayment() {
+        // Semak jika jumlah telah dikira
+        if (calculatedAmount <= 0) {
+            showToast('Sila kira jumlah zakat terlebih dahulu.');
+            document.getElementById('kalkulator').scrollIntoView({ behavior: 'smooth' });
+            return;
         }
 
-        function handleCategoryChange() {
-            const value = collectionTypeSelect.value;
-            errorMsg.style.display = 'none';
+        // Bina URL pembayaran dengan parameter 'amount'
+        // Contoh: https://toyyibpay.com/KOMPLEKS-SURAU-INSTAQLIM?amount=8.00?amount=16.00
+        const paymentUrl = `https://toyyibpay.com/KOMPLEKS-SURAU-INSTAQLIM?amount=8.00?amount=${calculatedAmount.toFixed(2)}`;
+        
+        // Paparkan URL dalam konsol untuk tujuan debugging
+        console.log('Mengarahkan ke laman pembayaran:', paymentUrl);
+        
+        // Buka URL pembayaran dalam tab baru
+        window.open(paymentUrl, '_blank');
+        
+        showToast('Mengarahkan anda ke laman pembayaran...');
+    }
 
-            if (value === 'custom_range') {
-                customPercentGroup.style.display = 'block';
-                rateDesc.textContent = 'Kadar fleksibel ikut keperluan asnaf.';
-            } else if (RATES[value]) {
-                customPercentGroup.style.display = 'none';
-                rateDesc.textContent = 'Kadar digunakan: ' + RATES[value].desc;
-            } else {
-                customPercentGroup.style.display = 'none';
-                rateDesc.textContent = 'Pilih kategori untuk lihat kadar.';
-            }
+    // --- FUNGSI MODAL LAFAZ AKAD ---
+    function openModal() {
+        document.getElementById('lafazModal').classList.add('show');
+    }
+
+    function closeModal() {
+        document.getElementById('lafazModal').classList.remove('show');
+    }
+
+    // --- EVENT LISTENERS ---
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCalculation();
+        document.getElementById('bilangan').addEventListener('input', updateCalculation);
+        document.getElementById('jenisBeras').addEventListener('change', updateCalculation);
+    });
+
+    // --- ANIMASI & FUNGSI LAIN (tidak berubah) ---
+    window.onclick = function(event) {
+        const modal = document.getElementById('lafazModal');
+        if (event.target == modal) {
+            closeModal();
         }
+    }
 
-        function validatePercent(input) {
-            let val = parseFloat(input.value);
-            if (val < 10) input.value = 10;
-            if (val > 25) input.value = 25;
-        }
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-        function toggleReceiptField() {
-            if (receiptCheckbox.checked) {
-                receiptSection.style.display = 'block';
-            } else {
-                receiptSection.style.display = 'none';
-            }
-        }
-
-        async function saveToGoogleSheet(entryData) {
-            if (GOOGLE_SCRIPT_URL.includes("MASUKKAN")) {
-                console.warn("URL Google Script belum dikemaskini. Data hanya disimpan di memori lokal.");
-                return false;
-            }
-
-            try {
-                // Membuat payload
-                const payload = {
-                    name: entryData.name,
-                    category: entryData.rateLabel,
-                    location: entryData.location, // TAMBAHAN BARU
-                    amount: entryData.amount,
-                    baseCommission: entryData.baseCommission,
-                    receiptFee: entryData.receiptFee,
-                    totalCommission: entryData.commission,
-                    notes: entryData.notes
-                };
-
-                // Menghantar data menggunakan fetch
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
-                
-                return true;
-            } catch (error) {
-                console.error("Error saving to Google Sheet:", error);
-                return false; 
-            }
-        }
-
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
-
-            // UI Loading state
-            submitBtn.disabled = true;
-            btnText.innerHTML = 'Sedang Memproses...';
-
-            // Get Values
-            const name = document.getElementById('pic-name').value;
-            const type = document.getElementById('collection-type').value;
-            const location = document.getElementById('payment-location').value; // TAMBAHAN BARU
-            const amount = parseFloat(document.getElementById('amount').value);
-            const notes = document.getElementById('notes').value.trim();
-            
-            // Resit Logic
-            const isReceipt = receiptCheckbox.checked;
-            const receiptCount = isReceipt ? parseInt(document.getElementById('receipt-count').value) || 0 : 0;
-            
-            // Data Tambahan Logic
-            const isAdditional = document.getElementById('is-additional-data').checked;
-
-            let receiptFee = 0;
-            let receiptRatePerItem = 0;
-
-            if (isReceipt) {
-                // Kiraan Kadar Resit
-                receiptRatePerItem = 0.50; // Asas
-                if (isAdditional) {
-                    receiptRatePerItem += 1.00; // Tambah Data Tambahan
-                }
-                receiptFee = receiptCount * receiptRatePerItem;
-            }
-
-            // Base Commission Calculation
-            let baseCommission = 0;
-            let rateLabel = '';
-
-            if (type === 'custom_range') {
-                const percent = parseFloat(document.getElementById('custom-percent').value);
-                baseCommission = amount * (percent / 100);
-                rateLabel = percent + '% (Fleksibel)';
-            } else if (RATES[type]) {
-                baseCommission = RATES[type].calc(amount);
-                rateLabel = RATES[type].desc;
-            }
-
-            const totalCommission = baseCommission + receiptFee;
-
-            const entry = {
-                id: Date.now(),
-                name: name,
-                rateLabel: rateLabel,
-                location: location, // TAMBAHAN BARU
-                amount: amount,
-                baseCommission: baseCommission,
-                receiptCount: receiptCount,
-                receiptRate: receiptRatePerItem,
-                receiptFee: receiptFee,
-                isAdditional: isAdditional,
-                commission: totalCommission,
-                notes: notes
-            };
-
-            // Simpan ke Google Sheet (Async)
-            await saveToGoogleSheet(entry);
-
-            // Update UI
-            entries.push(entry);
-            renderTable();
-            updateSummary();
-            
-            // Reset Form
-            document.getElementById('amount').value = '';
-            document.getElementById('notes').value = '';
-            document.getElementById('receipt-count').value = 0;
-            document.getElementById('is-additional-data').checked = false;
-            receiptCheckbox.checked = false;
-            // document.getElementById('payment-location').value = ""; // Optional: clear location
-            toggleReceiptField();
-            collectionTypeSelect.value = "";
-            handleCategoryChange();
-
-            // Finish
-            submitBtn.disabled = false;
-            btnText.innerText = 'Kira & Simpan Rekod';
-            
-            if(!GOOGLE_SCRIPT_URL.includes("MASUKKAN")) {
-                successMsg.style.display = 'block';
-                setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
             }
         });
+    }, observerOptions);
 
-        function deleteEntry(id) {
-            entries = entries.filter(entry => entry.id !== id);
-            renderTable();
-            updateSummary();
-        }
+    document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+    });
 
-        function renderTable() {
-            tableBody.innerHTML = '';
-            if (entries.length === 0) {
-                emptyState.style.display = 'block';
-                return;
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
-            emptyState.style.display = 'none';
-
-            entries.forEach(entry => {
-                const tr = document.createElement('tr');
-                let receiptText = '-';
-                
-                if (entry.receiptCount > 0) {
-                    const rateString = formatRM(entry.receiptRate) + "/resit";
-                    const extraNote = entry.isAdditional ? ' (+Data)' : '';
-                    receiptText = `${entry.receiptCount} resit<br><small>${rateString}${extraNote} (${formatRM(entry.receiptFee)})</small>`;
-                }
-                
-                tr.innerHTML = `
-                    <td>
-                        <strong>${entry.name}</strong><br>
-                        <span style="font-size:0.8em; color:#6b7280;">${entry.notes}</span>
-                    </td>
-                    <td>${entry.rateLabel}</td>
-                    <td>${entry.location}</td> <!-- TAMBAHAN BARU -->
-                    <td class="amount-col">${formatRM(entry.amount)}</td>
-                    <td class="amount-col" style="font-size:0.9em;">${receiptText}</td>
-                    <td class="amount-col" style="color:var(--primary-color); font-weight:bold;">${formatRM(entry.commission)}</td>
-                    <td style="text-align: center;">
-                        <button class="btn btn-delete" onclick="deleteEntry(${entry.id})">Padam</button>
-                    </td>
-                `;
-                tableBody.appendChild(tr);
-            });
-        }
-
-        function updateSummary() {
-            const totalCollection = entries.reduce((sum, entry) => sum + entry.amount, 0);
-            const totalCommission = entries.reduce((sum, entry) => sum + entry.commission, 0);
-
-            totalCollectionEl = document.getElementById('total-collection');
-            totalCommissionEl = document.getElementById('total-commission');
-
-            totalCollectionEl.textContent = formatRM(totalCollection);
-            totalCommissionEl.textContent = formatRM(totalCommission);
-        }
-        
-        handleCategoryChange();
-    </script>
+        });
+    });
+</script>
 </body>
 </html>
